@@ -1,0 +1,22 @@
+{
+  "name": "maker-camp",
+  "version": "0.0.1",
+  "main": "/",
+  "license": "GPLv2+",
+  "ignore": [
+    "**/.*",
+    "*.md",
+    "assets/css/less/*",
+    "assets/css/src/*",
+    "assets/js/src/*",
+    "assets/js/vendor/*",
+    "images/src/*",
+    "Gruntfile.js",
+    "package.json"
+  ],
+  "devDependencies": {
+    "flexslider": "~2.5.0",
+    "fancybox": "~2.1.5"
+  },
+  "keywords": []
+}

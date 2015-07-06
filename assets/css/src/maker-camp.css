@@ -1,0 +1,26 @@
+/**
+ * Maker Camp
+ * http://quorstudio.com
+ *
+ * Copyright (c) 2015 Alex T (Quorstudio)
+ * Licensed under the GPLv2+ license.
+ */
+.makercamp ul,
+.makercamp li {
+  list-style: none;
+  padding: 0;
+}
+.makercamp .flexslider .flex-direction-nav a {
+  height: 55px;
+}
+.makercamp .flexslider .flex-direction-nav a:after {
+  content: attr(data-content);
+}
+.makercamp .flexslider .flex-next {
+  opacity: 0.8;
+  right: 10px;
+}
+.makercamp .flexslider .flex-prev {
+  opacity: 0.8;
+  left: 10px;
+}
