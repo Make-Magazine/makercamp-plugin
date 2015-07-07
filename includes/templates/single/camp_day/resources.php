@@ -29,15 +29,15 @@ $project_sources = get_post_meta( get_the_ID(), '_project_links', TRUE );
 
 				<h3><?php _e( 'Recommended Projects', 'makercamp' ); ?></h3>
 
-				<?php if (isset($materials_pdf['url']) && isset($materials_pdf['title'])) : ?>
+				<?php if (isset($materials_pdf['url']) && !empty($materials_pdf['url']) && isset($materials_pdf['title']) && !empty($materials_pdf['title'])) : ?>
 					<a class="read-more" href="<?php echo esc_url( $materials_pdf['url'] ); ?>" target="_blank"><?php echo esc_html( $materials_pdf['title'] ); ?></a>
 				<?php endif; ?>
 
-				<?php if (isset($materials_2_pdf['url']) && isset($materials_2_pdf['title'])) : ?>
+				<?php if (isset($materials_2_pdf['url']) && !empty($materials_2_pdf['url']) && isset($materials_2_pdf['title']) && !empty($materials_2_pdf['title'])) : ?>
 					<a class="read-more" href="<?php echo esc_url( $materials_2_pdf['url'] ); ?>" target="_blank"><?php echo esc_html( $materials_2_pdf['title'] ); ?></a>
 				<?php endif; ?>
 
-				<?php if (isset($materials_3_pdf['url']) && isset($materials_3_pdf['title'])) : ?>
+				<?php if (isset($materials_3_pdf['url']) && !empty($materials_3_pdf['url']) && isset($materials_3_pdf['title']) && !empty($materials_3_pdf['title'])) : ?>
 					<a class="read-more" href="<?php echo esc_url( $materials_3_pdf['url'] ); ?>" target="_blank"><?php echo esc_html( $materials_3_pdf['title'] ); ?></a>
 				<?php endif; ?>
 			</li>
