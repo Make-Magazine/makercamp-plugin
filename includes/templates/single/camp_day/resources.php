@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $materials_pdf = get_post_meta( get_the_ID(), '_materials_pdf', TRUE );
 $materials_2_pdf = get_post_meta( get_the_ID(), '_materials_2_pdf', TRUE );
-$materials_3_pdf = get_post_meta( get_the_ID(), '_materials_2_pdf', TRUE );
+$materials_3_pdf = get_post_meta( get_the_ID(), '_materials_3_pdf', TRUE );
 $project_sources = get_post_meta( get_the_ID(), '_project_links', TRUE );
 
 ?>
