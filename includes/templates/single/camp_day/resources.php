@@ -16,6 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $materials_pdf = get_post_meta( get_the_ID(), '_materials_pdf', TRUE );
 $materials_2_pdf = get_post_meta( get_the_ID(), '_materials_2_pdf', TRUE );
+$materials_3_pdf = get_post_meta( get_the_ID(), '_materials_2_pdf', TRUE );
 $project_sources = get_post_meta( get_the_ID(), '_project_links', TRUE );
 
 ?>
@@ -28,8 +29,17 @@ $project_sources = get_post_meta( get_the_ID(), '_project_links', TRUE );
 
 				<h3><?php _e( 'Recommended Projects', 'makercamp' ); ?></h3>
 
-				<a class="read-more" href="<?php echo esc_url( $materials_pdf ); ?>" target="_blank"><?php _e( 'Folded Sketchook', 'makercamp' ); ?></a>
-				<a class="read-more" href="<?php echo esc_url( $materials_2_pdf ); ?>" target="_blank"><?php _e( 'Stitched Sketchbook', 'makercamp' ); ?></a>
+				<?php if (isset($materials_pdf['url']) && isset($materials_pdf['title'])) : ?>
+					<a class="read-more" href="<?php echo esc_url( $materials_pdf['url'] ); ?>" target="_blank"><?php echo esc_html( $materials_pdf['title'] ); ?></a>
+				<?php endif; ?>
+
+				<?php if (isset($materials_2_pdf['url']) && isset($materials_2_pdf['title'])) : ?>
+					<a class="read-more" href="<?php echo esc_url( $materials_2_pdf['url'] ); ?>" target="_blank"><?php echo esc_html( $materials_2_pdf['title'] ); ?></a>
+				<?php endif; ?>
+
+				<?php if (isset($materials_3_pdf['url']) && isset($materials_3_pdf['title'])) : ?>
+					<a class="read-more" href="<?php echo esc_url( $materials_3_pdf['url'] ); ?>" target="_blank"><?php echo esc_html( $materials_3_pdf['title'] ); ?></a>
+				<?php endif; ?>
 			</li>
 
 			<?php if ($project_sources) : ?>
