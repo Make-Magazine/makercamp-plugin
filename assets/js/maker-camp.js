@@ -12,39 +12,39 @@
      * Initialize flexslider
      */
     var mainSlider = jQuery('.makercamp .flexslider').flexslider({
-      animation : "slide",
+      animation    : "slide",
       animationLoop: false,
-      controlNav: false,
-      slideshow : false,
-      keyboard: false,
-      startAt: (startAtSlide ? startAtSlide : 0)
+      controlNav   : false,
+      slideshow    : false,
+      keyboard     : false,
+      startAt      : (startAtSlide ? startAtSlide : 0)
     });
 
     /**
      * 1. Add text for prev/next buttons on hover
      * 2. Handle unhover/hover when clicking on arrows
      */
-    jQuery('.flex-direction-nav a').hover(function() {
+    jQuery('.flex-direction-nav a').hover(function () {
       var label = '';
       if (jQuery(this).hasClass('flex-next')) {
         label = mainSlider.find('.flex-active-slide').next().find('.week-title').attr('data-title');
-      } else if(jQuery(this).hasClass('flex-prev')) {
+      } else if (jQuery(this).hasClass('flex-prev')) {
         label = mainSlider.find('.flex-active-slide').prev().find('.week-title').attr('data-title');
       }
 
       jQuery(this).attr('data-content', label);
-    }, function() {
+    }, function () {
       jQuery(this).attr('data-content', '');
     })
-        .click(function() {
-      jQuery(this).trigger('mouseout');
-      jQuery(this).trigger('mouseenter');
-    });
+        .click(function () {
+          jQuery(this).trigger('mouseout');
+          jQuery(this).trigger('mouseenter');
+        });
 
     /**
      * Initialize fancybox for first video on button click
      */
-    jQuery(document).on('click', '.play-first-video-button', function(e) {
+    jQuery(document).on('click', '.play-first-video-button', function (e) {
       e.preventDefault();
 
       jQuery('.dayly-camp-videos a').eq(0).trigger("click");
@@ -56,6 +56,32 @@
     jQuery(".makercamp .fancybox").attr('rel', 'gallery').fancybox({
       loop: false
     }); // fancybox
+
+    /**
+     * Open calendar handler
+     */
+    jQuery(document).on('click', '.calendar-button', function(e) {
+      e.preventDefault();
+
+      jQuery('.calendar-wrapper').show();
+
+    });
+
+    /**
+     * Close calendar handler (upon clicking on overlay)
+     */
+    jQuery(document).on('click', '.calendar-wrapper', function(e) {
+      if ($(e.target).hasClass('calendar-wrapper')) {
+        jQuery('.calendar-wrapper').hide();
+      }
+    });
+
+    /**
+     * Close calendar handler (upon clicking on go back link)
+     */
+    jQuery(document).on('click', '.calendar .go-back', function(e) {
+      jQuery('.calendar-wrapper').hide();
+    });
 
   });
 

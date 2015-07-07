@@ -5,6 +5,9 @@
  * Copyright (c) 2015 Alex T (Quorstudio)
  * Licensed under the GPLv2+ license.
  */
+.makercamp {
+  position: relative;
+}
 .makercamp ul,
 .makercamp li {
   list-style: none;
@@ -23,4 +26,18 @@
 .makercamp .flexslider .flex-prev {
   opacity: 0.8;
   left: 10px;
+}
+.makercamp .calendar-wrapper {
+  display: none;
+  position: absolute;
+  width: 100%;
+  top: 0;
+  z-index: 20;
+  padding-bottom: 85px;
+}
+.makercamp .calendar-wrapper .calendar {
+  max-width: 910px;
+  padding: 40px 65px 80px;
+  margin: 0 auto;
+  background: white;
 }
