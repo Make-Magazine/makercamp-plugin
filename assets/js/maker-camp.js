@@ -62,8 +62,16 @@
      */
     jQuery(document).on('click', '.calendar-button', function(e) {
       e.preventDefault();
+      var calWrapper = jQuery('.calendar-wrapper');
 
-      jQuery('.calendar-wrapper').show();
+      jQuery('#container').css({
+        'height' : calWrapper.outerHeight(),
+        'overflow' : 'hidden'
+      });
+
+      jQuery('#footer').hide();
+
+      calWrapper.show();
 
     });
 
@@ -72,7 +80,16 @@
      */
     jQuery(document).on('click', '.calendar-wrapper', function(e) {
       if ($(e.target).hasClass('calendar-wrapper')) {
-        jQuery('.calendar-wrapper').hide();
+        var calWrapper = jQuery('.calendar-wrapper');
+
+        jQuery('#container').css({
+          'height' : 'auto',
+          'overflow' : 'visible'
+        });
+
+        jQuery('#footer').show();
+
+        calWrapper.hide();
       }
     });
 
@@ -80,7 +97,16 @@
      * Close calendar handler (upon clicking on go back link)
      */
     jQuery(document).on('click', '.calendar .go-back', function(e) {
-      jQuery('.calendar-wrapper').hide();
+      var calWrapper = jQuery('.calendar-wrapper');
+
+      jQuery('#container').css({
+        'height' : 'auto',
+        'overflow' : 'visible'
+      });
+
+      jQuery('#footer').show();
+
+      calWrapper.hide();
     });
 
   });

@@ -176,8 +176,7 @@ foreach ( $all_weeks as $week ) {
 	 */
 	echo $camp_days_html;
 
-	// TODO: In progress
-//	echo '<a class="calendar-button" href="#">Calendar</a>';
+	echo '<a class="calendar-button" href="#">Calendar</a>';
 
 	if ( $current_week[0]->term_id == $week->term_id ) {
 		the_content();
