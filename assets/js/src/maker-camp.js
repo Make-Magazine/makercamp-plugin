@@ -117,3 +117,14 @@
   });
 
 })(this);
+
+/**
+ * Trigger first video modal on page load
+ */
+jQuery( document ).ready(function() {
+  setTimeout(
+  function() 
+  {
+    jQuery('.dayly-camp-videos a').eq(0).trigger("click");
+  }, 2000);
+});
