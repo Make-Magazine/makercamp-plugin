@@ -14,9 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 } // Exit if accessed directly
 
 
-$materials_pdf = get_post_meta( get_the_ID(), '_materials_pdf', TRUE );
-$materials_2_pdf = get_post_meta( get_the_ID(), '_materials_2_pdf', TRUE );
-$materials_3_pdf = get_post_meta( get_the_ID(), '_materials_3_pdf', TRUE );
+$materials = get_post_meta( get_the_ID(), '_materials', TRUE );
 $project_sources = get_post_meta( get_the_ID(), '_project_links', TRUE );
 
 ?>
@@ -24,23 +22,24 @@ $project_sources = get_post_meta( get_the_ID(), '_project_links', TRUE );
 <section class="camp-resources-wrapper">
 	<article <?php post_class(); ?>>
 		<ul class="camp-resources container">
+
+			<?php if ($materials) : ?>
+
 			<li>
 				<img src="<?php echo MAKERCAMP_URL . 'images/src/crafts.png'; ?>" alt="<?php _e( 'List of Materials', 'makercamp' ); ?>">
 
 				<h3><?php _e( 'Recommended Projects', 'makercamp' ); ?></h3>
 
-				<?php if (isset($materials_pdf['url']) && !empty($materials_pdf['url']) && isset($materials_pdf['title']) && !empty($materials_pdf['title'])) : ?>
-					<a class="read-more" href="<?php echo esc_url( $materials_pdf['url'] ); ?>" target="_blank"><?php echo esc_html( $materials_pdf['title'] ); ?></a>
-				<?php endif; ?>
-
-				<?php if (isset($materials_2_pdf['url']) && !empty($materials_2_pdf['url']) && isset($materials_2_pdf['title']) && !empty($materials_2_pdf['title'])) : ?>
-					<a class="read-more" href="<?php echo esc_url( $materials_2_pdf['url'] ); ?>" target="_blank"><?php echo esc_html( $materials_2_pdf['title'] ); ?></a>
-				<?php endif; ?>
-
-				<?php if (isset($materials_3_pdf['url']) && !empty($materials_3_pdf['url']) && isset($materials_3_pdf['title']) && !empty($materials_3_pdf['title'])) : ?>
-					<a class="read-more" href="<?php echo esc_url( $materials_3_pdf['url'] ); ?>" target="_blank"><?php echo esc_html( $materials_3_pdf['title'] ); ?></a>
-				<?php endif; ?>
+				<ul class="materials">
+					<?php foreach ( $materials as $material ) { ?>
+						<li>
+							<a href="<?php echo esc_url( $material[ 'url' ] ) ?>" class="read-more" target="_blank"><?php echo esc_html( $material[ 'title' ] ); ?></a>
+						</li>
+					<?php } ?>
+				</ul>
 			</li>
+
+			<?php endif; ?>
 
 			<?php if ($project_sources) : ?>
 

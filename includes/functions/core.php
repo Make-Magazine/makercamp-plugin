@@ -65,12 +65,13 @@ function admin_scripts_enqueue() {
 		wp_register_script( 'makercamp-admin', MAKERCAMP_URL . 'assets/js/maker-camp-admin.min.js', array( 'jquery' ), NULL, TRUE );
 		wp_localize_script( 'makercamp-admin', 'vars',
 			array(
-				'uploader_title'       => __( 'Choose or Upload a File', 'makercamp' ),
-				'uploader_button'      => __( 'Use this file', 'makercamp' ),
-				'url_placeholder'      => __( 'Enter a url', 'makercamp' ),
-				'title_placeholder'    => __( 'Enter readable title', 'makercamp' ),
-				'link_delete'          => __( 'Remove', 'makercamp' ),
-				'custom_taxonomy_slug' => 'week'
+				'uploader_title'          => __( 'Choose or Upload a File', 'makercamp' ),
+				'uploader_button'         => __( 'Use this file', 'makercamp' ),
+				'url_placeholder'         => __( 'Enter a url', 'makercamp' ),
+				'url_placeholder_with_or' => __( 'Enter a url or...', 'makercamp' ),
+				'title_placeholder'       => __( 'Enter readable title', 'makercamp' ),
+				'link_delete'             => __( 'Remove', 'makercamp' ),
+				'custom_taxonomy_slug'    => 'week'
 			)
 		);
 		wp_enqueue_script( 'makercamp-admin' );
@@ -321,40 +322,32 @@ function makercamp_day_meta_box_callback( $post ) {
 	echo '<h3>' . __( 'Camp Day Materials', 'makercamp' ) . '</h3>';
 
 	/**
-	 * Materials file uploader
+	 * Materials v2.0
 	 */
-	$materials_pdf = get_post_meta( $post->ID, '_materials_pdf', TRUE );
+	$materials = get_post_meta( $post->ID, '_materials', TRUE );
+
+	if ( $materials ) {
+		echo '<ul class="materials">';
+		foreach ( $materials as $index => $value ) {
+
+			echo '<li data-index="' . $index . '">';
+			echo '<label for="makercamp_material_' . $index . '"_url>';
+			printf( __( 'Material %d', 'makercamp' ), $index + 1 );
+			echo '</label> ';
+			echo '<input type="text" name="makercamp_materials[' . $index . '][title]" placeholder="' . __( 'Enter readable title', 'makercamp' ) . '" value="' . ( ! empty( $materials[ $index ][ 'title' ] ) ? esc_attr( $materials[ $index ][ 'title' ] ) : '' ) . '" size="25" />';
+			echo '<input type="text" class="makercamp-file-uploaded" id="makercamp_material_' . $index . '_url" name="makercamp_materials[' . $index . '][url]" placeholder="' . __( 'Enter a url or...', 'makercamp' ) . '" value="' . ( ! empty( $materials[ $index ][ 'url' ] ) ? esc_attr( $materials[ $index ][ 'url' ] ) : '' ) . '" size="25" />';
+			echo '<input type="button" class="button makercamp-file-uploader" value="' . __( 'Choose or Upload a File', 'makercamp' ) . '" />';
+			echo '<a class="makercamp-material-delete" href="#">' . __( 'Remove', 'makercamp' ) . '</a>';
+			echo '</li>';
+		}
+		echo '</ul>';
+	}
 
 	echo '<p>';
-	echo '<label for="makercamp_materials_pdf">' . __( 'Material 1', 'makercamp' ) . '</label>';
-	echo '<input type="text" name="materials-pdf[title]" id="makercamp_materials_pdf_title" placeholder="' . __( 'Enter readable title', 'makercamp' ) . '" class="" value="' . (isset($materials_pdf['title']) ? esc_attr( $materials_pdf['title'] ) : '') . '" />';
-	echo '<input type="text" name="materials-pdf[url]" id="makercamp_materials_pdf" class="makercamp-file-uploaded" placeholder="' . __( 'Enter a url or...', 'makercamp' ) . '" value="' . (isset($materials_pdf['url']) ? esc_attr( $materials_pdf['url'] ) : '') . '" />';
-	echo '<input type="button" class="button makercamp-file-uploader" value="' . __( 'Choose or Upload a File', 'makercamp' ) . '" />';
+	echo '<a class="makercamp-add-material" href="#">' . __( 'Add new material', 'makercamp' ) . '</a>';
 	echo '</p>';
 
-	/**
-	 * Materials 2 file uploader
-	 */
-	$materials_2_pdf = get_post_meta( $post->ID, '_materials_2_pdf', TRUE );
-
-	echo '<p>';
-	echo '<label for="makercamp_materials_2_pdf">' . __( 'Material 2', 'makercamp' ) . '</label>';
-	echo '<input type="text" name="materials-2-pdf[title]" id="makercamp_materials_2_pdf_title" placeholder="' . __( 'Enter readable title', 'makercamp' ) . '" class="" value="' . (isset($materials_2_pdf['title']) ? esc_attr( $materials_2_pdf['title'] ) : '') . '" />';
-	echo '<input type="text" name="materials-2-pdf[url]" id="makercamp_materials_2_pdf" class="makercamp-file-uploaded" placeholder="' . __( 'Enter a url or...', 'makercamp' ) . '" value="' . (isset($materials_2_pdf['url']) ? esc_attr( $materials_2_pdf['url'] ) : '') . '" />';
-	echo '<input type="button" class="button makercamp-file-uploader" value="' . __( 'Choose or Upload a File', 'makercamp' ) . '" />';
-	echo '</p>';
-
-	/**
-	 * Materials 3 file uploader
-	 */
-	$materials_3_pdf = get_post_meta( $post->ID, '_materials_3_pdf', TRUE );
-
-	echo '<p>';
-	echo '<label for="makercamp_materials_3_pdf">' . __( 'Material 3', 'makercamp' ) . '</label>';
-	echo '<input type="text" name="materials-3-pdf[title]" id="makercamp_materials_3_pdf_title" placeholder="' . __( 'Enter readable title', 'makercamp' ) . '" class="" value="' . (isset($materials_3_pdf['title']) ? esc_attr( $materials_3_pdf['title'] ) : '') . '" />';
-	echo '<input type="text" name="materials-3-pdf[url]" id="makercamp_materials_3_pdf" class="makercamp-file-uploaded" placeholder="' . __( 'Enter a url or...', 'makercamp' ) . '" value="' . (isset($materials_3_pdf['url']) ? esc_attr( $materials_3_pdf['url'] ) : '') . '" />';
-	echo '<input type="button" class="button makercamp-file-uploader" value="' . __( 'Choose or Upload a File', 'makercamp' ) . '" />';
-	echo '</p>';
+	echo '<ul class="new-materials"></ul>';
 
 	echo '<h3>' . __( 'Other projects', 'makercamp' ) . '</h3>';
 
@@ -443,12 +436,22 @@ function save_metabox_data( $post_id ) {
 			$youtube_links[ $index ][ 'description' ] = esc_textarea( $value[ 'description' ] );
 		}
 	}
-	$materials_pdf['url'] = isset($_POST[ 'materials-pdf' ]['url']) ? esc_url_raw( $_POST[ 'materials-pdf' ]['url'] ) : '';
-	$materials_pdf['title'] = isset($_POST[ 'materials-pdf' ]['title']) ? sanitize_text_field( $_POST[ 'materials-pdf' ]['title'] ) : '';
-	$materials_2_pdf['url'] = isset($_POST[ 'materials-2-pdf' ]['url']) ? esc_url_raw( $_POST[ 'materials-2-pdf' ]['url'] ) : '';
-	$materials_2_pdf['title'] = isset($_POST[ 'materials-2-pdf' ]['title']) ? sanitize_text_field( $_POST[ 'materials-2-pdf' ]['title'] ) : '';
-	$materials_3_pdf['url'] = isset($_POST[ 'materials-3-pdf' ]['url']) ? esc_url_raw( $_POST[ 'materials-3-pdf' ]['url'] ) : '';
-	$materials_3_pdf['title'] = isset($_POST[ 'materials-3-pdf' ]['title']) ? sanitize_text_field( $_POST[ 'materials-3-pdf' ]['title'] ) : '';
+	$materials_pdf[ 'url' ]     = isset( $_POST[ 'materials-pdf' ][ 'url' ] ) ? esc_url_raw( $_POST[ 'materials-pdf' ][ 'url' ] ) : '';
+	$materials_pdf[ 'title' ]   = isset( $_POST[ 'materials-pdf' ][ 'title' ] ) ? sanitize_text_field( $_POST[ 'materials-pdf' ][ 'title' ] ) : '';
+	$materials_2_pdf[ 'url' ]   = isset( $_POST[ 'materials-2-pdf' ][ 'url' ] ) ? esc_url_raw( $_POST[ 'materials-2-pdf' ][ 'url' ] ) : '';
+	$materials_2_pdf[ 'title' ] = isset( $_POST[ 'materials-2-pdf' ][ 'title' ] ) ? sanitize_text_field( $_POST[ 'materials-2-pdf' ][ 'title' ] ) : '';
+	$materials_3_pdf[ 'url' ]   = isset( $_POST[ 'materials-3-pdf' ][ 'url' ] ) ? esc_url_raw( $_POST[ 'materials-3-pdf' ][ 'url' ] ) : '';
+	$materials_3_pdf[ 'title' ] = isset( $_POST[ 'materials-3-pdf' ][ 'title' ] ) ? sanitize_text_field( $_POST[ 'materials-3-pdf' ][ 'title' ] ) : '';
+	$materials                  = '';
+	if ( is_array( $_POST[ 'makercamp_materials' ] ) ) {
+		foreach ( $_POST[ 'makercamp_materials' ] as $index => $value ) {
+			$temp_array            = array();
+			$temp_array[ 'url' ]   = esc_url_raw( $value[ 'url' ] );
+			$temp_array[ 'title' ] = sanitize_text_field( $value[ 'title' ] );
+
+			$materials[ ] = $temp_array;
+		}
+	}
 	$project_links = '';
 	if ( is_array( $_POST[ 'makercamp_project_source' ] ) ) {
 		foreach ( $_POST[ 'makercamp_project_source' ] as $index => $value ) {
@@ -520,6 +523,7 @@ function save_metabox_data( $post_id ) {
 	update_post_meta( $post_id, '_materials_2_pdf', $materials_2_pdf );
 	update_post_meta( $post_id, '_materials_3_pdf', $materials_3_pdf );
 	update_post_meta( $post_id, '_project_links', $project_links );
+	update_post_meta( $post_id, '_materials', $materials );
 }
 
 /**

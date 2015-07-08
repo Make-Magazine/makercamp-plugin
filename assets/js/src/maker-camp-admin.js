@@ -17,7 +17,7 @@
 		var file_uploader_frame; // Instantiates the variable that holds the media library frame.
 
 		// Runs when the image button is clicked.
-		$('.makercamp-file-uploader').click(function (e) {
+		$(document).on('click', '.makercamp-file-uploader', function (e) {
 
 			var me = $(this);
 			// Prevents the default action from occuring.
@@ -61,15 +61,55 @@
 
       var new_index = last_new_index ? parseInt(last_new_index) + 1 : (last_existing_index ? parseInt(last_existing_index) + 1 : 0);
 
-			var tmpl = '<li data-index="' + new_index + '"><input type="text" name="makercamp_project_source[' + new_index + '][url]" placeholder="' + vars.url_placeholder + '" size="25" /><input type="text" name="makercamp_project_source[' + new_index + '][title]" placeholder="' + vars.title_placeholder + '" size="25" /><a class="makercamp-project-delete" href="#">' + vars.link_delete + '</a></li>';
+			var tmpl = '<li data-index="' + new_index + '">' +
+          '<input type="text" name="makercamp_project_source[' + new_index + '][title]" placeholder="' + vars.title_placeholder + '" size="25" />' +
+          '<input type="text" name="makercamp_project_source[' + new_index + '][url]" placeholder="' + vars.url_placeholder + '" size="25" />' +
+          '<a class="makercamp-project-delete" href="#">' + vars.link_delete + '</a>' +
+          '</li>';
 
       new_projects_element.append(tmpl);
+		});
+
+    /**
+		 * Dynamically add materials
+		 */
+		$('.makercamp-add-material').click(function (e) {
+
+			// Prevents the default action from occuring.
+			e.preventDefault();
+
+      var new_materials_element = $('.new-materials');
+
+      var last_existing_index = $('.materials').find('li').last().attr('data-index');
+      var last_new_index = new_materials_element.find('li').last().attr('data-index');
+
+      var new_index = last_new_index ? parseInt(last_new_index) + 1 : (last_existing_index ? parseInt(last_existing_index) + 1 : 0);
+
+			var tmpl = '<li data-index="' + new_index + '">' +
+          '<input type="text" name="makercamp_materials[' + new_index + '][title]" placeholder="' + vars.title_placeholder + '" size="25" />' +
+          '<input type="text" class="makercamp-file-uploaded" name="makercamp_materials[' + new_index + '][url]" placeholder="' + vars.url_placeholder_with_or + '" size="25" />' +
+          '<input type="button" class="button makercamp-file-uploader" value="' + vars.uploader_title + '" />' +
+          '<a class="makercamp-material-delete" href="#">' + vars.link_delete + '</a>' +
+          '</li>';
+
+      new_materials_element.append(tmpl);
 		});
 
 		/**
 		 * Dynamically remove project link
 		 */
 		$(document).on('click', '.makercamp-project-delete', function (e) {
+
+			// Prevents the default action from occuring.
+			e.preventDefault();
+
+			$(this).parent('li').remove();
+		});
+
+    /**
+		 * Dynamically remove materials
+		 */
+		$(document).on('click', '.makercamp-material-delete', function (e) {
 
 			// Prevents the default action from occuring.
 			e.preventDefault();
