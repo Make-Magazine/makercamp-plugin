@@ -65,16 +65,18 @@
     /**
      * Open calendar handler
      */
-    jQuery(document).on('click', '.calendar-button', function(e) {
+    jQuery(document).on('click', '.calendar-button', function (e) {
       e.preventDefault();
       var calWrapper = jQuery('.calendar-wrapper');
 
       jQuery('#container').css({
-        'height' : calWrapper.outerHeight(),
-        'overflow' : 'hidden'
+        'height'  : calWrapper.outerHeight(),
+        'overflow': 'hidden'
       });
 
       jQuery('#footer').hide();
+
+      window.scrollTo(0, 0);
 
       calWrapper.show();
 
@@ -83,13 +85,13 @@
     /**
      * Close calendar handler (upon clicking on overlay)
      */
-    jQuery(document).on('click', '.calendar-wrapper', function(e) {
+    jQuery(document).on('click', '.calendar-wrapper', function (e) {
       if ($(e.target).hasClass('calendar-wrapper')) {
         var calWrapper = jQuery('.calendar-wrapper');
 
         jQuery('#container').css({
-          'height' : 'auto',
-          'overflow' : 'visible'
+          'height'  : 'auto',
+          'overflow': 'visible'
         });
 
         jQuery('#footer').show();
@@ -101,17 +103,23 @@
     /**
      * Close calendar handler (upon clicking on go back link)
      */
-    jQuery(document).on('click', '.calendar .go-back', function(e) {
+    jQuery(document).on('click', '.calendar .go-back', function (e) {
       var calWrapper = jQuery('.calendar-wrapper');
 
       jQuery('#container').css({
-        'height' : 'auto',
-        'overflow' : 'visible'
+        'height'  : 'auto',
+        'overflow': 'visible'
       });
 
       jQuery('#footer').show();
 
       calWrapper.hide();
+    });
+
+    jQuery(document).on('click', '.calendar-wrapper .camp_day-number a', function(e) {
+      if (jQuery(this).attr('href') == '#') {
+        e.preventDefault();
+      }
     });
 
   });
@@ -121,10 +129,9 @@
 /**
  * Trigger first video modal on page load
  */
-jQuery( document ).ready(function() {
+jQuery(document).ready(function () {
   setTimeout(
-  function() 
-  {
-    jQuery('.dayly-camp-videos a').eq(0).trigger("click");
-  }, 2000);
+      function () {
+        jQuery('.dayly-camp-videos a').eq(0).trigger("click");
+      }, 2000);
 });
