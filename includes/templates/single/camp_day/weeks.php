@@ -111,6 +111,15 @@ foreach ( $all_weeks as $week ) {
 		$__title = get_the_title( $camp_day->ID );
 
 		/**
+		 * Get day content
+		 */
+		global $post;
+		$post = &get_post( $camp_day->ID );
+		setup_postdata( $post );
+		$__description = get_the_content();
+		wp_reset_postdata( $post );
+
+		/**
 		 * Get day to check if it's current day
 		 */
 		$__week_day = get_post_meta( $camp_day->ID, '_week_day', TRUE );
@@ -130,7 +139,7 @@ foreach ( $all_weeks as $week ) {
 		 */
 		$__permalink = get_permalink( $camp_day->ID );
 
-		$camp_days_html .= '<li class="camp_day-number ' . ($current_week_day == $__week_day && $current_week[0]->term_id == $week->term_id ? 'opened-day' : ''). '">';
+		$camp_days_html .= '<li class="camp_day-number' . ( $current_week_day == $__week_day && $current_week[ 0 ]->term_id == $week->term_id ? ' opened-day' : '' ) . '" data-id="' . $camp_day->ID . '" data-title="' . $__title . '" data-description="' . $__description . '" data-placement="top" data-trigger="manual">';
 
 		if ( $__is_current ) {
 			$camp_days_html .= '<span class="icon-current"></span>';
