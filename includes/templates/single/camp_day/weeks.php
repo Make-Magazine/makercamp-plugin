@@ -139,7 +139,7 @@ foreach ( $all_weeks as $week ) {
 		 */
 		$__permalink = get_permalink( $camp_day->ID );
 
-		$camp_days_html .= '<li class="camp_day-number' . ( $current_week_day == $__week_day && $current_week[ 0 ]->term_id == $week->term_id ? ' opened-day' : '' ) . '" data-id="' . $camp_day->ID . '" data-title="' . $__title . '" data-description="' . $__description . '">';
+		$camp_days_html .= '<li class="camp_day-number' . ( $current_week_day == $__week_day && $current_week[ 0 ]->term_id == $week->term_id ? ' opened-day' : '' ) . '" data-id="' . $camp_day->ID . '" data-title="' . $__title . '" data-description="' . $__description . '" data-placement="top" data-trigger="manual">';
 
 		if ( $__is_current ) {
 			$camp_days_html .= '<span class="icon-current"></span>';

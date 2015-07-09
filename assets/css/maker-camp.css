@@ -41,3 +41,6 @@
   margin: 0 auto;
   background: white;
 }
+.makercamp .calendar-wrapper .calendar .popover-content {
+  color: #000000;
+}
