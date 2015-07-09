@@ -175,24 +175,25 @@
     });
 
     /**
-     * Initialize popover on calendar days hover
-     */
-    jQuery('.calendar-wrapper .camp_day-number a').hover(function () {
-      var element = $(this).parent();
-
-      // Popover on
-      element.popover({
-        title: '',
-        content: function() {
-          return jQuery(this).attr('data-title');
-        }
-      }).popover('show');
-    }, function() {
-      var element = $(this).parent();
-
-      // Popover off
-      element.popover('hide');
-    });
+    * Initialize popover on calendar days hover
+     * TODO: Needs to be enabled after client's content change
+    */
+    //jQuery('.calendar-wrapper .camp_day-number a').hover(function () {
+    //  var element = $(this).parent();
+    //
+    //  // Popover on
+    //  element.popover({
+    //    title: '',
+    //    content: function() {
+    //      return jQuery(this).attr('data-title');
+    //    }
+    //  }).popover('show');
+    //}, function() {
+    //  var element = $(this).parent();
+    //
+    //  // Popover off
+    //  element.popover('hide');
+    //});
 
   });
 
