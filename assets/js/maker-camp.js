@@ -17,7 +17,61 @@
       controlNav   : false,
       slideshow    : false,
       keyboard     : false,
-      startAt      : (startAtSlide ? startAtSlide : 0)
+      startAt      : (startAtSlide ? startAtSlide : 0),
+
+      /**
+       * Setup ajax content reload on week change
+       */
+      after: function () {
+
+        /**
+         * Remove opened-day class from current opened day
+         */
+        mainSlider.find('.camp_day-number').removeClass('opened-day');
+
+        /**
+         * Figure out new opened day ID, title, description and assign needed class to it
+         */
+        var new_camp_day = mainSlider.find('.flex-active-slide .camp_days .camp_day-number').first().addClass('opened-day');
+        var new_camp_day_id = new_camp_day.attr('data-id');
+        var new_camp_day_title = new_camp_day.attr('data-title');
+        var new_camp_day_description = new_camp_day.attr('data-description');
+
+        /**
+         * Do same with class for calendar
+         */
+        jQuery('.calendar .camp_day-number').removeClass('opened-day').filter('[data-id="' + new_camp_day_id + '"]').addClass('opened-day');
+
+        /**
+         * Update current day title and description inside current slide (which is week)
+         */
+        mainSlider.find('.flex-active-slide .day-title').html('<span class="label">' + vars.day_label + ' '+ new_camp_day.find('a').html() +'</span>: ' + new_camp_day_title);
+        mainSlider.find('.flex-active-slide .day-description').html(new_camp_day_description);
+
+        /**
+         * Make and ajax call
+         */
+        jQuery.ajax({
+          type   : "post",
+          url    : vars.ajax_url,
+          data   : {action: 'refresh_camp_day_content', camp_day_id: new_camp_day_id, _ajax_nonce: vars.ajax_nonce},
+          success: function (html) { //so, if data is retrieved, store it in html
+
+            jQuery(".makercamp .daily-camp-videos-wrapper").fadeOut('slow', function () {
+              $(this).remove();
+            });
+
+            jQuery(".makercamp .content-wrapper").fadeOut('slow', function () {
+              $(this).remove();
+            });
+
+            jQuery(".makercamp .camp-resources-wrapper").fadeOut('slow', function () {
+              $(this).remove();
+              jQuery(".makercamp .calendar-wrapper").after(jQuery(html));
+            });
+          }
+        }); //close jQuery.ajax
+      }
     });
 
     /**
@@ -60,13 +114,13 @@
     /**
      * Open calendar handler
      */
-    jQuery(document).on('click', '.calendar-button', function(e) {
+    jQuery(document).on('click', '.calendar-button', function (e) {
       e.preventDefault();
       var calWrapper = jQuery('.calendar-wrapper');
 
       jQuery('#container').css({
-        'height' : calWrapper.outerHeight(),
-        'overflow' : 'hidden'
+        'height'  : calWrapper.outerHeight(),
+        'overflow': 'hidden'
       });
 
       jQuery('#footer').hide();
@@ -78,13 +132,13 @@
     /**
      * Close calendar handler (upon clicking on overlay)
      */
-    jQuery(document).on('click', '.calendar-wrapper', function(e) {
+    jQuery(document).on('click', '.calendar-wrapper', function (e) {
       if ($(e.target).hasClass('calendar-wrapper')) {
         var calWrapper = jQuery('.calendar-wrapper');
 
         jQuery('#container').css({
-          'height' : 'auto',
-          'overflow' : 'visible'
+          'height'  : 'auto',
+          'overflow': 'visible'
         });
 
         jQuery('#footer').show();
@@ -96,12 +150,12 @@
     /**
      * Close calendar handler (upon clicking on go back link)
      */
-    jQuery(document).on('click', '.calendar .go-back', function(e) {
+    jQuery(document).on('click', '.calendar .go-back', function (e) {
       var calWrapper = jQuery('.calendar-wrapper');
 
       jQuery('#container').css({
-        'height' : 'auto',
-        'overflow' : 'visible'
+        'height'  : 'auto',
+        'overflow': 'visible'
       });
 
       jQuery('#footer').show();
@@ -116,10 +170,9 @@
 /**
  * Trigger first video modal on page load
  */
-jQuery( document ).ready(function() {
+jQuery(document).ready(function () {
   setTimeout(
-  function() 
-  {
-    jQuery('.dayly-camp-videos a').eq(0).trigger("click");
-  }, 2000);
+      function () {
+        jQuery('.dayly-camp-videos a').eq(0).trigger("click");
+      }, 2000);
 });

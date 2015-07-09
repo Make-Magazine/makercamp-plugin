@@ -40,26 +40,19 @@ if ( ! $is_unlocked ) {
 do_action( 'makercamp_before_single_camp_day' );
 ?>
 
-
-	<section class="content-wrapper">
-		<article id="camp_day-<?php the_ID(); ?>" <?php post_class('container'); ?>>
-
-			<?php
-			/**
-			 * makercamp_single_camp_day_content hook
-			 *
-			 * @see makercamp_single_camp_day_content - 10
-			 */
-			do_action( 'makercamp_single_camp_day_content' );
-			?>
-
-		</article>
-	</section>
+<?php
+/**
+ * makercamp_single_camp_day_content hook
+ *
+ * @see makercamp_single_camp_day_content - 10
+ */
+do_action( 'makercamp_single_camp_day_content' );
+?>
 
 <?php
 /**
  * makercamp_after_single_camp_day hook
  *
- * @see
+ * @see makercamp_output_single_resources - 10
  */
 do_action( 'makercamp_after_single_camp_day' ); ?>

@@ -94,11 +94,18 @@ function frontend_scripts_enqueue() {
 		wp_enqueue_script( 'fancybox-js', MAKERCAMP_URL . 'assets/js/vendor/fancybox/source/jquery.fancybox.pack.js', array( 'jquery' ), NULL, TRUE );
 
 		wp_enqueue_style( 'makercamp-css', MAKERCAMP_URL . 'assets/css/maker-camp.min.css' );
-		wp_enqueue_script( 'makercamp-frontend', MAKERCAMP_URL . 'assets/js/maker-camp.min.js', array(
+		wp_enqueue_script( 'makercamp-frontend', MAKERCAMP_URL . 'assets/js/maker-camp.js', array(
 			'jquery',
 			'fancybox-js',
 			'flexslider-js'
 		), NULL, TRUE );
+		wp_localize_script( 'makercamp-frontend', 'vars',
+			array(
+				'ajax_url'   => admin_url('admin-ajax.php'),
+				'ajax_nonce' => wp_create_nonce( 'update-camp_day' ),
+				'day_label' => __( 'Day', 'makercamp' )
+			)
+		);
 	}
 }
 

@@ -13,6 +13,24 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 } // Exit if accessed directly
 
+global $post;
 ?>
 
-<div class="entry-content"><?php the_content(); ?></div>
+<section class="content-wrapper">
+	<article id="camp_day-<?php the_ID(); ?>" <?php post_class( 'container' ); ?>>
+
+		<div class="entry-content">
+			<?php setup_postdata( $post );
+			the_content();
+			wp_reset_postdata( $post ); ?>
+		</div>
+
+		<?php
+		/**
+		 * makercamp_single_camp_day_content_inner hook
+		 */
+		do_action( 'makercamp_single_camp_day_content_inner' );
+		?>
+
+	</article>
+</section>

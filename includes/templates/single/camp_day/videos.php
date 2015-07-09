@@ -13,10 +13,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 } // Exit if accessed directly
 
-
-// TODO: build with fancybox, js part left.
-
-
 $youtube_links = get_post_meta( get_the_ID(), '_youtube_links', TRUE ); ?>
 
 <section class="daily-camp-videos-wrapper">

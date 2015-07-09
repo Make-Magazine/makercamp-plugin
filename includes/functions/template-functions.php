@@ -33,6 +33,9 @@ function setup() {
 
 	add_action( 'makercamp_after_single_camp_day', $n( 'makercamp_output_single_resources' ) );
 
+	add_action( 'wp_ajax_refresh_camp_day_content', $n('refresh_camp_day_content_callback') );
+	add_action( 'wp_ajax_nopriv_refresh_camp_day_content', $n('refresh_camp_day_content_callback') );
+
 	add_action( 'template_redirect', $n( 'locked_day_template_redirect' ) );
 
 	do_action( 'makercamp_template_functions_loaded' );
@@ -281,6 +284,10 @@ if ( ! function_exists( 'makercamp_output_main_content' ) ) {
 	}
 }
 
+/*************************************************
+ * Template functions: Single camp_day
+ ************************************************/
+
 if ( ! function_exists( 'makercamp_output_single_weeks' ) ) {
 
 	/**
@@ -331,4 +338,31 @@ if ( ! function_exists( 'makercamp_output_single_resources' ) ) {
 	function makercamp_output_single_resources() {
 		makercamp_get_template( 'single/camp_day/resources.php' );
 	}
+}
+
+/**
+ * Return camp_day content for ajax call
+ */
+function refresh_camp_day_content_callback() {
+	check_ajax_referer( "update-camp_day" );
+
+	/**
+	 * Check if post id exists in ajax data
+	 */
+	if ( empty( $_POST[ 'camp_day_id' ] ) ) {
+		die( 'Missing camp_day ID' );
+	}
+
+	/**
+	 * Set global post to be camp_day we want to be
+	 */
+	$id = $_POST[ 'camp_day_id' ];
+	global $post;
+	$post = &get_post($id);
+
+	makercamp_get_template( 'single/camp_day/videos.php' );
+	makercamp_get_template( 'single/camp_day/content.php' );
+	makercamp_get_template( 'single/camp_day/resources.php' );
+
+	die();
 }
