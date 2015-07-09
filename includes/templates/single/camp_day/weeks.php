@@ -180,7 +180,7 @@ foreach ( $all_weeks as $week ) {
 
 	if ( $current_week[0]->term_id == $week->term_id ) {
 		the_content();
-		echo '<a class="play-first-video-button" href="#">' . __( 'Play first video!', 'makercamp' ) . '</a>';
+		echo '<a class="play-first-video-button" href="#">' . __( 'Watch today&#39;s video!', 'makercamp' ) . '</a>';
 	}
 
 	echo '</div>';
