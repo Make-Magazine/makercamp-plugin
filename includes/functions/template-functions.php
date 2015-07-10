@@ -27,14 +27,14 @@ function setup() {
 	add_action( 'makercamp_main_content_template', $n( 'makercamp_output_main_content' ) );
 
 	add_action( 'makercamp_before_single_camp_day', $n( 'makercamp_output_single_weeks' ), 10 );
-	add_action( 'makercamp_before_single_camp_day', $n( 'makercamp_output_single_videos' ), 20 );
 
-	add_action( 'makercamp_single_camp_day_content', $n( 'makercamp_single_camp_day_content' ) );
+	add_action( 'makercamp_single_camp_day_content', $n( 'makercamp_output_single_videos' ), 10 );
+	add_action( 'makercamp_single_camp_day_content', $n( 'makercamp_single_camp_day_content' ), 20 );
 
 	add_action( 'makercamp_after_single_camp_day', $n( 'makercamp_output_single_resources' ) );
 
-	add_action( 'wp_ajax_refresh_camp_day_content', $n('refresh_camp_day_content_callback') );
-	add_action( 'wp_ajax_nopriv_refresh_camp_day_content', $n('refresh_camp_day_content_callback') );
+	add_action( 'wp_ajax_refresh_camp_day_content', $n( 'refresh_camp_day_content_callback' ) );
+	add_action( 'wp_ajax_nopriv_refresh_camp_day_content', $n( 'refresh_camp_day_content_callback' ) );
 
 	add_action( 'template_redirect', $n( 'locked_day_template_redirect' ) );
 
@@ -353,12 +353,21 @@ function refresh_camp_day_content_callback() {
 		die( 'Missing camp_day ID' );
 	}
 
+	$id = $_POST[ 'camp_day_id' ];
+
+	/**
+	 * Check if day is still locked
+	 */
+	$__is_locked = get_post_meta( $id, '_lock_status', TRUE ) == 1 ? FALSE : TRUE;
+	if ( $__is_locked ) {
+		die( 'Day is locked' );
+	}
+
 	/**
 	 * Set global post to be camp_day we want to be
 	 */
-	$id = $_POST[ 'camp_day_id' ];
 	global $post;
-	$post = &get_post($id);
+	$post = &get_post( $id );
 
 	makercamp_get_template( 'single/camp_day/videos.php' );
 	makercamp_get_template( 'single/camp_day/content.php' );

@@ -9,6 +9,64 @@
     var startAtSlide = jQuery('.taxonomy-weeks li[data-is-current="1"]').attr('data-index');
 
     /**
+     * Helper function: update day content
+     */
+    var updateDayContent = function (new_camp_day, slideIndex) {
+
+      slideIndex = typeof slideIndex !== 'undefined' ? slideIndex : new_camp_day.closest('.taxonomy-week').attr('data-index');
+
+      /**
+       * Remove opened-day class from current opened day
+       */
+      mainSlider.find('.camp_day-number').removeClass('opened-day');
+
+      /**
+       * Figure out new opened day ID, title, description and assign needed class to it
+       */
+      new_camp_day.addClass('opened-day');
+      var new_camp_day_id = new_camp_day.attr('data-id');
+      var new_camp_day_title = new_camp_day.attr('data-title');
+      var new_camp_day_description = new_camp_day.attr('data-description');
+
+      /**
+       * Do same with class for calendar
+       */
+      jQuery('.calendar .camp_day-number').removeClass('opened-day').filter('[data-id="' + new_camp_day_id + '"]').addClass('opened-day');
+
+      /**
+       * Update current day title and description inside current slide (which is week)
+       */
+      mainSlider.find('.taxonomy-week[data-index="' + slideIndex + '"] .day-title').html('<span class="label">' + vars.day_label + ' ' + new_camp_day.find('a').html() + '</span>: ' + new_camp_day_title);
+      mainSlider.find('.taxonomy-week[data-index="' + slideIndex + '"] .day-description').html(new_camp_day_description);
+
+      /**
+       * Make and ajax call
+       */
+      jQuery.ajax({
+        type   : "post",
+        url    : vars.ajax_url,
+        data   : {action: 'refresh_camp_day_content', camp_day_id: new_camp_day_id, _ajax_nonce: vars.ajax_nonce},
+        success: function (html) { //so, if data is retrieved, store it in html
+
+          /**
+           * Update url according to day
+           */
+          history.pushState({}, '', new_camp_day.find('a').attr('href'));
+
+          /**
+           * Update title according new day
+           */
+          $('title').html(new_camp_day_title);
+
+          $('.makercamp .day-wrapper').fadeOut('slow', function() {
+            $(this).html($(html));
+            $(this).fadeIn('fast');
+          });
+        }
+      }); //close jQuery.ajax
+    };
+
+    /**
      * Initialize flexslider
      */
     var mainSlider = jQuery('.makercamp .flexslider').flexslider({
@@ -22,56 +80,35 @@
       /**
        * Setup ajax content reload on week change
        */
-      after: function () {
+      before: function (slider) {
 
         /**
-         * Remove opened-day class from current opened day
+         * Get our new camp day and call update day content func
          */
-        mainSlider.find('.camp_day-number').removeClass('opened-day');
-
-        /**
-         * Figure out new opened day ID, title, description and assign needed class to it
-         */
-        var new_camp_day = mainSlider.find('.flex-active-slide .camp_days .camp_day-number').first().addClass('opened-day');
-        var new_camp_day_id = new_camp_day.attr('data-id');
-        var new_camp_day_title = new_camp_day.attr('data-title');
-        var new_camp_day_description = new_camp_day.attr('data-description');
-
-        /**
-         * Do same with class for calendar
-         */
-        jQuery('.calendar .camp_day-number').removeClass('opened-day').filter('[data-id="' + new_camp_day_id + '"]').addClass('opened-day');
-
-        /**
-         * Update current day title and description inside current slide (which is week)
-         */
-        mainSlider.find('.flex-active-slide .day-title').html('<span class="label">' + vars.day_label + ' '+ new_camp_day.find('a').html() +'</span>: ' + new_camp_day_title);
-        mainSlider.find('.flex-active-slide .day-description').html(new_camp_day_description);
-
-        /**
-         * Make and ajax call
-         */
-        jQuery.ajax({
-          type   : "post",
-          url    : vars.ajax_url,
-          data   : {action: 'refresh_camp_day_content', camp_day_id: new_camp_day_id, _ajax_nonce: vars.ajax_nonce},
-          success: function (html) { //so, if data is retrieved, store it in html
-
-            jQuery(".makercamp .daily-camp-videos-wrapper").fadeOut('slow', function () {
-              $(this).remove();
-            });
-
-            jQuery(".makercamp .content-wrapper").fadeOut('slow', function () {
-              $(this).remove();
-            });
-
-            jQuery(".makercamp .camp-resources-wrapper").fadeOut('slow', function () {
-              $(this).remove();
-              jQuery(".makercamp .calendar-wrapper").after(jQuery(html));
-            });
-          }
-        }); //close jQuery.ajax
+        var nextSlideIndex = slider.animatingTo;
+        var new_camp_day = mainSlider.find('.taxonomy-week[data-index="' + nextSlideIndex + '"] .camp_days .camp_day-number').first();
+        updateDayContent(new_camp_day, nextSlideIndex);
       }
+    });
+
+    /**
+     * Setup ajax content reload on day change
+     */
+    jQuery(document).on('click', '.makercamp .flexslider .camp_day-number a', function (e) {
+      e.preventDefault();
+
+      /**
+       * Don't allow locked weeks to be available
+       */
+      if ($(this).attr('href') == "#") {
+        return false;
+      }
+
+      /**
+       * Get our new camp day and call update day content func
+       */
+      var new_camp_day = $(this).parent();
+      updateDayContent(new_camp_day);
     });
 
     /**
@@ -168,7 +205,7 @@
     /**
      * Don't handle locked days in calendar
      */
-    jQuery(document).on('click', '.calendar-wrapper .camp_day-number a', function(e) {
+    jQuery(document).on('click', '.calendar-wrapper .camp_day-number a', function (e) {
       if (jQuery(this).attr('href') == '#') {
         e.preventDefault();
       }
@@ -182,12 +219,12 @@
 
       // Popover on
       element.popover({
-        title: '',
-        content: function() {
+        title  : '',
+        content: function () {
           return jQuery(this).attr('data-title');
         }
       }).popover('show');
-    }, function() {
+    }, function () {
       var element = $(this).parent();
 
       // Popover off

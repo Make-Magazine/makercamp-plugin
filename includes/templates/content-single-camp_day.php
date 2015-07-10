@@ -29,30 +29,35 @@ $is_unlocked = get_post_meta( get_the_ID(), '_lock_status', TRUE );
  */
 if ( ! $is_unlocked ) {
 	// TODO: redirect to last open day of the week
-}
+} ?>
 
+<?php
 /**
  * makercamp_before_single_camp_day hook
  *
  * @see makercamp_output_single_weeks - 10
- * @see makercamp_output_single_videos - 20
  */
 do_action( 'makercamp_before_single_camp_day' );
 ?>
 
-<?php
-/**
- * makercamp_single_camp_day_content hook
- *
- * @see makercamp_single_camp_day_content - 10
- */
-do_action( 'makercamp_single_camp_day_content' );
-?>
+<div class="day-wrapper">
 
-<?php
-/**
- * makercamp_after_single_camp_day hook
- *
- * @see makercamp_output_single_resources - 10
- */
-do_action( 'makercamp_after_single_camp_day' ); ?>
+	<?php
+	/**
+	 * makercamp_single_camp_day_content hook
+	 *
+	 * @see makercamp_output_single_videos - 10
+	 * @see makercamp_single_camp_day_content - 20
+	 */
+	do_action( 'makercamp_single_camp_day_content' );
+	?>
+
+	<?php
+	/**
+	 * makercamp_after_single_camp_day hook
+	 *
+	 * @see makercamp_output_single_resources - 10
+	 */
+	do_action( 'makercamp_after_single_camp_day' ); ?>
+
+</div>
