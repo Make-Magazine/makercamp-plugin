@@ -101,9 +101,9 @@ function frontend_scripts_enqueue() {
 		), NULL, TRUE );
 		wp_localize_script( 'makercamp-frontend', 'vars',
 			array(
-				'ajax_url'   => admin_url('admin-ajax.php'),
+				'ajax_url'   => admin_url( 'admin-ajax.php' ),
 				'ajax_nonce' => wp_create_nonce( 'update-camp_day' ),
-				'day_label' => __( 'Day', 'makercamp' )
+				'day_label'  => __( 'Day', 'makercamp' )
 			)
 		);
 	}
@@ -456,7 +456,7 @@ function save_metabox_data( $post_id ) {
 			$temp_array[ 'url' ]   = esc_url_raw( $value[ 'url' ] );
 			$temp_array[ 'title' ] = sanitize_text_field( $value[ 'title' ] );
 
-			$materials[ ] = $temp_array;
+			$materials[] = $temp_array;
 		}
 	}
 	$project_links = '';
@@ -466,7 +466,7 @@ function save_metabox_data( $post_id ) {
 			$temp_array[ 'url' ]   = esc_url_raw( $value[ 'url' ] );
 			$temp_array[ 'title' ] = sanitize_text_field( $value[ 'title' ] );
 
-			$project_links[ ] = $temp_array;
+			$project_links[] = $temp_array;
 		}
 	}
 
@@ -605,7 +605,7 @@ function makercamp_weeks_meta_box_callback( $post ) {
 			<?php wp_nonce_field( 'radio-tax-add-' . $taxonomy, '_wpnonce_radio-add-tag', FALSE ); ?>
 		</p>
 	</div>
-<?php
+	<?php
 }
 
 /**
@@ -653,6 +653,7 @@ function edit_form_tag() {
 function additional_week_fields( $term, $tax ) {
 	$category_image_url        = get_option( "{$tax}_image_{$term->term_id}" );            // Retrieve our Attachment ID from the Options Database Table
 	$category_mobile_image_url = get_option( "{$tax}_mobile_image_{$term->term_id}" );            // Retrieve our Attachment ID from the Options Database Table
+	$week_pdf                  = get_option( "{$tax}_pdf_asset_{$term->term_id}" );            // Retrieve our Attachment ID from the Options Database Table
 	$long_description          = get_option( "{$tax}_long_description_{$term->term_id}" );            // Retrieve our Attachment ID from the Options Database Table
 	$animation_coords          = get_option( "{$tax}_anim_coords_{$term->term_id}" );            // Retrieve our Attachment ID from the Options Database Table
 	?>
@@ -699,6 +700,21 @@ function additional_week_fields( $term, $tax ) {
 	</tr>
 	<tr class="form-field">
 		<th scope="row" valign="top">
+			<label for="meta-order"><?php _e( 'Week PDF asset' ); ?></label>
+		</th>
+		<td>
+			<div id="WeekPdf">
+
+				<!-- Define our actual upload field -->
+				<input type="text" name="week-pdf-asset" class="makercamp-file-uploaded" value="<?php echo esc_attr( $week_pdf ); ?>" />
+				<input type="button" class="button makercamp-file-uploader" value="<?php _e( 'Choose or Upload a File', 'makercamp' ); ?>" />
+
+			</div>
+			<span class="description"><?php _e( 'Upload an appropriate file.' ); ?></span>
+		</td>
+	</tr>
+	<tr class="form-field">
+		<th scope="row" valign="top">
 			<label for="meta-order"><?php _e( 'Homepage Animation Coordinates' ); ?></label>
 		</th>
 		<td>
@@ -709,7 +725,7 @@ function additional_week_fields( $term, $tax ) {
 			<span class="description"><?php _e( 'Please provide coordinates for homepage interective area animation' ); ?></span>
 		</td>
 	</tr>
-<?php
+	<?php
 }
 
 /**
@@ -746,6 +762,14 @@ function save_week_fields( $term_id ) {
 
 			// Update our category image
 			update_option( "{$tax}_mobile_image_{$term_id}", $category_mobile_img );
+		}
+
+		if ( isset( $_POST[ 'week-pdf-asset' ] ) ) {
+			// Verify that the url given is what we're expecting
+			$week_pdf = esc_url_raw( $_POST[ 'week-pdf-asset' ] );
+
+			// Update our category image
+			update_option( "{$tax}_pdf_asset_{$term_id}", $week_pdf );
 		}
 
 		if ( isset( $_POST[ 'week-animation-coords' ] ) ) {
