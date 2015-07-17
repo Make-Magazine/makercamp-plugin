@@ -63,7 +63,7 @@
            */
           $('title').html(new_camp_day_title);
 
-          $('.makercamp .day-wrapper').fadeOut('slow', function() {
+          $('.makercamp .day-wrapper').fadeOut('slow', function () {
             $(this).html($(html));
             $(this).fadeIn('fast');
           });
@@ -217,36 +217,33 @@
     });
 
     /**
-    * Initialize popover on calendar days hover
-     * TODO: Needs to be enabled after client's content change
-    */
-    //jQuery('.calendar-wrapper .camp_day-number a').hover(function () {
-    //  var element = $(this).parent();
-    //
-    //  // Popover on
-    //  element.popover({
-    //    title: '',
-    //    content: function() {
-    //      return jQuery(this).attr('data-title');
-    //    }
-    //  }).popover('show');
-    //}, function() {
-    //  var element = $(this).parent();
-    //
-    //  // Popover off
-    //  element.popover('hide');
-    //});
+     * Initialize popover on calendar days hover
+     */
+    jQuery('.calendar-wrapper .camp_day-number a').hover(function () {
+      var element = $(this).parent();
+
+      // Popover on
+      element.popover({
+        title  : '',
+        content: function () {
+          return jQuery(this).attr('data-title');
+        }
+      }).popover('show');
+    }, function () {
+      var element = $(this).parent();
+
+      // Popover off
+      element.popover('hide');
+    });
+
+    /**
+     * Trigger first video modal on page load
+     */
+    setTimeout(
+        function () {
+          jQuery('.dayly-camp-videos a').eq(0).trigger("click");
+        }, 2000);
 
   });
 
 })(this);
-
-/**
- * Trigger first video modal on page load
- */
-jQuery(document).ready(function () {
-  setTimeout(
-      function () {
-        jQuery('.dayly-camp-videos a').eq(0).trigger("click");
-      }, 2000);
-});
