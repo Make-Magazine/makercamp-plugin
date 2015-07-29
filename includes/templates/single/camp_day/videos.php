@@ -19,7 +19,7 @@ $youtube_links = get_post_meta( get_the_ID(), '_youtube_links', TRUE ); ?>
 	<article <?php post_class(); ?>>
 		<ul class="dayly-camp-videos container">
 			<?php foreach ( $youtube_links as $key => $array ) {
-				echo '<li>';
+				echo '<li class="col-md-4">';
 				if ( ! empty( $array[ 'url' ] ) ) {
 					$pattern = '#^(?:https?://)?(?:www\.)?(?:youtu\.be/|youtube\.com(?:/embed/|/v/|/watch\?v=|/watch\?.+&v=))([\w-]{11})(?:(?:&list=)?([\w-]*))(?:.+)?$#x';
 					if ( preg_match( $pattern, $array[ 'url' ], $match ) ) {
